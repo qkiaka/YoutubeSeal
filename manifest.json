@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube封印タイマー",
+  "version": "1.0.0",
+  "description": "設定した期間、YouTubeへのアクセスをブロックし残り日数を表示します。解除には専用コード+48時間のクールダウンが必要です。",
+  "permissions": ["storage", "webNavigation", "tabs", "alarms"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YouTube封印タイマー"
+  },
+  "options_page": "options.html"
+}

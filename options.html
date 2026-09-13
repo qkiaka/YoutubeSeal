@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>YouTube封印タイマー 設定</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>YouTube封印タイマー</h1>
+
+    <!-- 初期設定 -->
+    <div id="setupView" style="display:none;">
+      <p>封印する期間を決めてください。</p>
+      <label>期間（日数）</label>
+      <input type="number" id="daysInput" value="14" min="1">
+      <div class="warn">
+        設定すると、二度と表示されない「解除コード」が1回だけ発行されます。
+        すぐに見返せない場所（紙に書いて友人に預ける、金庫に入れる等）に保管してください。
+        コードを失くしても、それ自体が封印の助けになります。
+      </div>
+      <button id="startBtn">この期間で封印を開始する</button>
+    </div>
+
+    <!-- 発行されたコード表示（1回のみ） -->
+    <div id="codeView" style="display:none;">
+      <p>封印を開始しました。以下が解除コードです。<b>この画面を閉じると二度と表示されません。</b></p>
+      <div class="code-box" id="codeBox"></div>
+      <div class="warn">今すぐスクリーンショットを撮らず、紙に書き写して信頼できる人に預ける、
+        または開けにくい場所にしまうことをおすすめします。</div>
+      <button id="codeDoneBtn">保管しました。閉じる</button>
+    </div>
+
+    <!-- 通常時（封印中） -->
+    <div id="activeView" style="display:none;">
+      <p class="sub" id="statusText"></p>
+      <div class="countdown" id="countdownText">--</div>
+
+      <h2>期間を延長する（いつでも可能）</h2>
+      <input type="number" id="extendDays" value="7" min="1">
+      <button id="extendBtn" class="secondary">延長する</button>
+
+      <h2>早期解除</h2>
+      <div id="noRequestView">
+        <p class="small">解除には48時間のクールダウンと解除コードの入力が必要です。</p>
+        <button id="requestUnlockBtn" class="secondary">解除をリクエストする</button>
+      </div>
+      <div id="pendingView" style="display:none;">
+        <p id="cooldownText" class="small"></p>
+        <button id="cancelRequestBtn" class="secondary">リクエストを取り消す</button>
+        <div id="codeEntry" style="display:none; margin-top:16px;">
+          <label>解除コードを入力</label>
+          <input type="text" id="unlockCodeInput" placeholder="発行されたコードを入力">
+          <button id="confirmUnlockBtn">解除する</button>
+          <p class="error" id="unlockError"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 封印終了後 -->
+    <div id="freeView" style="display:none;">
+      <p>現在、封印期間はありません。</p>
+      <label>新しく封印を始める期間（日数）</label>
+      <input type="number" id="restartDays" value="14" min="1">
+      <button id="restartBtn">封印を開始する</button>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

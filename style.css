@@ -1,0 +1,94 @@
+* { box-sizing: border-box; }
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  background: #1a1a1a;
+  color: #f5f5f5;
+  margin: 0;
+  padding: 24px;
+}
+.card {
+  max-width: 480px;
+  margin: 0 auto;
+  background: #242424;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+h1 {
+  font-size: 1.3em;
+  margin-top: 0;
+  color: #ff5c5c;
+}
+h2 {
+  font-size: 1.05em;
+  color: #ddd;
+  border-bottom: 1px solid #3a3a3a;
+  padding-bottom: 6px;
+  margin-top: 32px;
+}
+.countdown {
+  font-size: 2.4em;
+  font-weight: bold;
+  text-align: center;
+  margin: 24px 0;
+  color: #ff5c5c;
+}
+.sub {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 24px;
+}
+button {
+  background: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  cursor: pointer;
+  margin-top: 8px;
+}
+button.secondary {
+  background: #3a3a3a;
+  color: #eee;
+}
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1a1a1a;
+  color: #fff;
+  margin: 6px 0 12px 0;
+}
+.code-box {
+  background: #1a1a1a;
+  border: 1px dashed #ff5c5c;
+  padding: 14px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  word-break: break-all;
+  margin: 12px 0;
+}
+.warn {
+  background: #3a2a1a;
+  border-left: 4px solid #e0a030;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin: 12px 0;
+}
+.error {
+  color: #ff8080;
+  font-size: 0.9em;
+}
+.small {
+  font-size: 0.85em;
+  color: #999;
+}
