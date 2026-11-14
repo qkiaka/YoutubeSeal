@@ -16,10 +16,37 @@ async function authAction(type){
   if(result?.ok){message.textContent=result.needsEmailConfirmation?"確認メールを送信しました。メール内のリンクを開いてからログインしてください。":"認証しました。セッション記録が同期されます。";}
   else message.textContent=result?.error||"認証に失敗しました。";
   await renderAuth();
+  await renderCheat();
 }
 document.getElementById("loginBtn").addEventListener("click",()=>authAction("AUTH_LOGIN"));
 document.getElementById("signupBtn").addEventListener("click",()=>authAction("AUTH_SIGNUP"));
 document.getElementById("logoutBtn").addEventListener("click",async()=>{const r=await send({type:"AUTH_LOGOUT"});document.getElementById("authMessage").textContent=r?.ok?"ログアウトしました。":r?.error;renderAuth();});
+
+async function renderCheat(){
+  const panel=document.getElementById("cheatPanel");
+  const status=await send({type:"GET_CHEAT_STATUS"});
+  panel.hidden=!status?.authorized;
+  if(!status?.authorized) return;
+  document.getElementById("cheatStatus").textContent=
+    "現在の惑星："+status.growthPoints+" Growth points / Level "+status.level+
+    (status.activeTestSessionId?" ／ テストセッション進行中":" ／ テストセッションなし");
+  document.getElementById("completeTestBtn").disabled=!status.activeTestSessionId;
+  document.getElementById("cancelTestBtn").disabled=!status.activeTestSessionId;
+  document.getElementById("startTestBtn").disabled=!!status.activeTestSessionId;
+}
+async function cheatAction(type,extra={}){
+  const message=document.getElementById("cheatMessage");
+  message.textContent="処理中…";
+  const result=await send({type,...extra});
+  message.textContent=result?.ok?"更新しました。ダッシュボードを再読み込みすると反映されます。":(result?.error||"処理に失敗しました。");
+  await renderCheat();
+}
+document.getElementById("createCompletedTestBtn").addEventListener("click",()=>cheatAction("CHEAT_CREATE_COMPLETED",{minutes:document.getElementById("cheatMinutes").value}));
+document.getElementById("startTestBtn").addEventListener("click",()=>cheatAction("CHEAT_START_SESSION",{minutes:document.getElementById("cheatMinutes").value}));
+document.getElementById("completeTestBtn").addEventListener("click",()=>cheatAction("CHEAT_FINISH_SESSION",{status:"completed"}));
+document.getElementById("cancelTestBtn").addEventListener("click",()=>cheatAction("CHEAT_FINISH_SESSION",{status:"cancelled"}));
+document.getElementById("setGrowthBtn").addEventListener("click",()=>cheatAction("CHEAT_SET_GROWTH_POINTS",{value:document.getElementById("cheatGrowthPoints").value}));
+document.getElementById("setLevelBtn").addEventListener("click",()=>cheatAction("CHEAT_SET_LEVEL",{value:document.getElementById("cheatLevel").value}));
 
 async function render(){
   const state=await send({type:"GET_STATE"});
