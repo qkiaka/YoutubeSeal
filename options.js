@@ -20,7 +20,7 @@ async function authAction(type){
 }
 document.getElementById("loginBtn").addEventListener("click",()=>authAction("AUTH_LOGIN"));
 document.getElementById("signupBtn").addEventListener("click",()=>authAction("AUTH_SIGNUP"));
-document.getElementById("logoutBtn").addEventListener("click",async()=>{const r=await send({type:"AUTH_LOGOUT"});document.getElementById("authMessage").textContent=r?.ok?"ログアウトしました。":r?.error;renderAuth();});
+document.getElementById("logoutBtn").addEventListener("click",async()=>{const r=await send({type:"AUTH_LOGOUT"});document.getElementById("authMessage").textContent=r?.ok?"ログアウトしました。":r?.error;await renderAuth();await renderCheat();});
 
 async function renderCheat(){
   const panel=document.getElementById("cheatPanel");
@@ -80,4 +80,4 @@ document.getElementById("extendBtn").addEventListener("click",async()=>{const da
 document.getElementById("requestUnlockBtn").addEventListener("click",async()=>{await send({type:"REQUEST_UNLOCK"});render();});
 document.getElementById("cancelRequestBtn").addEventListener("click",async()=>{await send({type:"CANCEL_UNLOCK_REQUEST"});render();});
 document.getElementById("confirmUnlockBtn").addEventListener("click",async()=>{const code=document.getElementById("unlockCodeInput").value.trim(),res=await send({type:"CONFIRM_UNLOCK",code});if(!res.ok)document.getElementById("unlockError").textContent=res.error;else render();});
-renderAuth();render();setInterval(render,30000);
+renderAuth();renderCheat();render();setInterval(render,30000);
