@@ -116,3 +116,20 @@ button:focus-visible,input:focus-visible{outline:3px solid #9bdff1;outline-offse
 .countdown{color:#9bdff1;text-shadow:0 0 18px #83d9ff55}
 @keyframes ys-stars{from{transform:translateY(0);opacity:.45}to{transform:translateY(8px);opacity:.9}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+
+.planet-mini-scene{display:flex;align-items:center;gap:14px;min-height:82px;margin:8px 0 20px;padding:10px 14px;border:1px solid #ffffff18;border-radius:12px;background:linear-gradient(110deg,#ffffff12,transparent);color:#c9d7ef;font-size:.8em;letter-spacing:.08em}
+.planet-mini-orb{display:block;position:relative;flex:0 0 54px;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#c6b5a0,#817b82 58%,#3f465b);box-shadow:inset -7px -6px 12px #11182788,0 0 18px var(--theme-glow,#53627d);animation:ys-planet-float 5s ease-in-out infinite;transition:background 1s ease,box-shadow 1s ease}
+.planet-mini-orb::before{content:"";position:absolute;inset:-7px;border:1px solid #ffffff55;border-radius:50%;opacity:0;transform:rotate(-20deg);transition:all .8s ease}
+body[data-stage="2"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#d0f7ff,#4aa3cf 48%,#174a83)}
+body[data-stage="3"] .planet-mini-orb{background:radial-gradient(ellipse at 60% 62%,#42a98a 0 20%,transparent 21%),radial-gradient(ellipse at 32% 34%,#7dcf9d 0 24%,transparent 25%),radial-gradient(circle at 30% 25%,#b7f2ed,#2585a0 58%,#16435e)}
+body[data-stage="4"] .planet-mini-orb{background:radial-gradient(ellipse at 60% 62%,#6dc987 0 23%,transparent 24%),radial-gradient(ellipse at 32% 34%,#b4d77c 0 25%,transparent 26%),radial-gradient(circle at 30% 25%,#d5d8a3,#498c70 58%,#263f63)}
+body[data-stage="5"] .planet-mini-orb{background:radial-gradient(ellipse at 60% 62%,#8bc78c 0 24%,transparent 25%),radial-gradient(circle at 30% 25%,#fff0c5,#4e9aa0 58%,#273e6b)}
+body[data-stage="6"] .planet-mini-orb,body[data-stage="7"] .planet-mini-orb,body[data-stage="8"] .planet-mini-orb,body[data-stage="9"] .planet-mini-orb,body[data-stage="10"] .planet-mini-orb{box-shadow:inset -7px -6px 12px #11182788,0 0 24px var(--theme-glow)}
+body[data-stage="6"] .planet-mini-orb::before,body[data-stage="7"] .planet-mini-orb::before,body[data-stage="8"] .planet-mini-orb::before,body[data-stage="9"] .planet-mini-orb::before,body[data-stage="10"] .planet-mini-orb::before{opacity:1;inset:-10px -18px;border-width:2px}
+body[data-stage="6"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#d7c8f4,#8b70ba 55%,#3e376e)}
+body[data-stage="7"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#d7f4ff,#528fbd 55%,#263e78)}
+body[data-stage="8"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#c4fff0,#46a69b 55%,#244a75)}
+body[data-stage="9"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#f4d8ff,#9b76c6 55%,#3c356e)}
+body[data-stage="10"] .planet-mini-orb{background:radial-gradient(circle at 30% 25%,#fff5c7,#d4a75e 35%,#4f8d88 70%,#283c68)}
+@keyframes ys-planet-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
