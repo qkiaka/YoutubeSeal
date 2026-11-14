@@ -15,9 +15,10 @@ HOW TO RUN LOCALLY
 WHAT IT READS
 - ys_profiles: display name
 - ys_planets: growth points and level
-- ys_seal_sessions: actual seal-session history
+- ys_seal_sessions: seal-session history (test records are marked TEST)
 
 The dashboard does not display sample sessions or sample friends.
+Developer Cheat Mode can create marked TEST records for the authorized test account; these appear in the same history and metrics.
 Friends are not implemented yet.
 The extension currently initializes planet growth points at 0 and level 1, but does not award growth points yet.
 The dashboard only counts completed session durations as protected time.
