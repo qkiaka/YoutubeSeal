@@ -48,3 +48,6 @@ body[data-stage] .planet-scene{background:radial-gradient(ellipse at 50% 78%,col
 .card:hover{transform:translateY(-2px);box-shadow:0 16px 42px #17243b16}
 .nav:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Make the page-wide background visibly evolve with the active planet stage. */
+body[data-stage]{background:radial-gradient(ellipse at 88% 0%,color-mix(in srgb,var(--cosmos-glow) 24%,transparent),transparent 48%),radial-gradient(ellipse at 4% 92%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 42%),var(--paper)}
