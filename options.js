@@ -3,6 +3,10 @@ function send(msg){return new Promise(resolve=>chrome.runtime.sendMessage(msg,re
 function show(id){["setupView","codeView","activeView","freeView"].forEach(v=>document.getElementById(v).style.display=v===id?"block":"none");}
 function fmtLeft(ms){const n=Math.floor(ms/60000),d=Math.floor(n/1440),h=Math.floor((n%1440)/60);return `あと ${d}日 ${h}時間`;}
 
+async function renderPlanetTheme(){
+  const state=await send({type:"GET_PLANET_STATE"});
+  if(window.YoutubeSealPlanetTheme) window.YoutubeSealPlanetTheme.apply(state?.level||1);
+}
 async function renderAuth(){
   const state=await send({type:"GET_AUTH_STATE"});
   document.getElementById("authStatus").textContent=state.signedIn?`ログイン中：${state.email}`:"未ログイン（封印機能はローカルで動作します）";
@@ -80,4 +84,4 @@ document.getElementById("extendBtn").addEventListener("click",async()=>{const da
 document.getElementById("requestUnlockBtn").addEventListener("click",async()=>{await send({type:"REQUEST_UNLOCK"});render();});
 document.getElementById("cancelRequestBtn").addEventListener("click",async()=>{await send({type:"CANCEL_UNLOCK_REQUEST"});render();});
 document.getElementById("confirmUnlockBtn").addEventListener("click",async()=>{const code=document.getElementById("unlockCodeInput").value.trim(),res=await send({type:"CONFIRM_UNLOCK",code});if(!res.ok)document.getElementById("unlockError").textContent=res.error;else render();});
-renderAuth();renderCheat();render();setInterval(render,30000);
+renderAuth();renderCheat();renderPlanetTheme();render();setInterval(render,30000);
