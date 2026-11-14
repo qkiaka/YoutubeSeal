@@ -50,7 +50,7 @@ async function loadData(){
   const [profiles,planets,rows]=await Promise.all([
     api("/rest/v1/ys_profiles?select=user_id,display_name,created_at&user_id=eq."+uid,{},token),
     api("/rest/v1/ys_planets?select=user_id,growth_points,level,updated_at&user_id=eq."+uid,{},token),
-    api("/rest/v1/ys_seal_sessions?select=id,started_at,ended_at,planned_duration_minutes,status,created_at&user_id=eq."+uid+"&order=started_at.desc&limit=100",{},token)
+    api("/rest/v1/ys_seal_sessions?select=id,started_at,ended_at,planned_duration_minutes,status,created_at,is_test&user_id=eq."+uid+"&order=started_at.desc&limit=100",{},token)
   ]);
   profile=profiles?.[0]||null; planet=planets?.[0]||null; sessions=rows||[];
   if(!profile){
@@ -80,7 +80,8 @@ function formatDate(value){return value?new Date(value).toLocaleString():"—";}
 function statusLabel(status){return ({active:"Active",paused:"Paused",completed:"Completed",cancelled:"Cancelled"})[status]||status||"Unknown";}
 function sessionMarkup(row){
   const mins=durationMinutes(row);
-  return `<div class="session-row"><div class="session-icon">${row.status==="completed"?"✦":row.status==="active"?"◷":"○"}</div><div class="session-main"><strong>${safe(statusLabel(row.status))} commitment</strong><small>Started: ${safe(formatDate(row.started_at))}</small><small>${row.ended_at?"Ended: "+safe(formatDate(row.ended_at)):"Not ended yet"}</small></div><div class="session-meta"><b>${formatDuration(mins)}</b><small>of ${Number(row.planned_duration_minutes)||0} min planned</small></div></div>`;
+  const testTag=row.is_test?'<span class="test-tag">TEST</span>':'';
+  return `<div class="session-row"><div class="session-icon">${row.status==="completed"?"✦":row.status==="active"?"◷":"○"}</div><div class="session-main"><strong>${safe(statusLabel(row.status))} commitment ${testTag}</strong><small>Started: ${safe(formatDate(row.started_at))}</small><small>${row.ended_at?"Ended: "+safe(formatDate(row.ended_at)):"Not ended yet"}</small></div><div class="session-meta"><b>${formatDuration(mins)}</b><small>of ${Number(row.planned_duration_minutes)||0} min planned</small></div></div>`;
 }
 function renderData(){
   const email=authSession.user?.email||"Signed in";
