@@ -93,6 +93,11 @@ function renderData(){
   $("planet-name").textContent=displayName+"'s planet";
   $("planet-level").textContent="Level "+(planet?.level??1);
   $("level-number").textContent=planet?.level??1;
+  if (window.YoutubeSealPlanetTheme) {
+    const stage = window.YoutubeSealPlanetTheme.apply(planet?.level??1);
+    const sceneCaption = document.querySelector(".planet-scene p");
+    if (sceneCaption) sceneCaption.textContent = stage.name + " · Stage " + stage.stage + " of 10";
+  }
   $("growth-points").textContent=planet?.growth_points??0;
   $("growth-note").textContent=(planet?.growth_points??0)===0?"Your planet is at its starting point. Growth points are not being awarded by the extension yet.":"Your current growth points are read from Planetube.";
   const completed=sessions.filter(s=>s.status==="completed");
