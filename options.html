@@ -18,6 +18,27 @@
       <button id="logoutBtn" class="secondary" style="display:none;">ログアウト</button>
       <p id="authMessage" class="small" aria-live="polite"></p>
     </section>
+    <section id="cheatPanel" hidden style="border:2px dashed #9a7b45;border-radius:12px;padding:14px;margin:18px 0;background:#fbf7ed;">
+      <h2 style="margin-top:0;">Developer Cheat Mode</h2>
+      <p class="small">このアカウント専用のテスト機能です。YouTubeのブロック状態は変更しません。テストセッションは履歴にTESTと表示され、惑星の数値は実際のデータに反映されます。</p>
+      <label>テスト時間（分）</label><input type="number" id="cheatMinutes" value="30" min="1" max="10080">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+        <button id="createCompletedTestBtn" class="secondary">完了済みテスト記録を作成</button>
+        <button id="startTestBtn" class="secondary">テストセッション開始</button>
+        <button id="completeTestBtn" class="secondary">テストを完了</button>
+        <button id="cancelTestBtn" class="secondary">テストをキャンセル</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:end;">
+        <div style="flex:1;min-width:130px;"><label>Growth points（設定値）</label><input type="number" id="cheatGrowthPoints" min="0" value="100"></div>
+        <button id="setGrowthBtn" class="secondary">Growth pointsを設定</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:end;">
+        <div style="flex:1;min-width:130px;"><label>Planet level（設定値）</label><input type="number" id="cheatLevel" min="1" value="2"></div>
+        <button id="setLevelBtn" class="secondary">Levelを設定</button>
+      </div>
+      <p id="cheatStatus" class="small" aria-live="polite"></p>
+      <p id="cheatMessage" class="small" aria-live="polite"></p>
+    </section>
     <div id="setupView" style="display:none;">
       <p>封印する期間を決めてください。</p><label>期間（日数）</label><input type="number" id="daysInput" value="14" min="1">
       <div class="warn">設定すると、二度と表示されない「解除コード」が1回だけ発行されます。なくさないように保管してください。</div>
