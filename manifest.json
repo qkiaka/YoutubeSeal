@@ -1,15 +1,11 @@
 {
   "manifest_version": 3,
   "name": "YouTube封印タイマー",
-  "version": "1.0.0",
-  "description": "設定した期間、YouTubeへのアクセスをブロックし残り日数を表示します。解除には専用コード+48時間のクールダウンが必要です。",
+  "version": "1.1.0",
+  "description": "設定した期間、YouTubeへのアクセスをブロックし、封印記録をSupabaseに同期できます。",
   "permissions": ["storage", "webNavigation", "tabs", "alarms"],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "YouTube封印タイマー"
-  },
+  "host_permissions": ["https://htpjpdagmbkkoqotdgzt.supabase.co/*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "YouTube封印タイマー" },
   "options_page": "options.html"
 }
