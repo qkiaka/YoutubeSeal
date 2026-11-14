@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f3ec">
+  <title>YoutubeSeal — Your planet</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">YS</span> YoutubeSeal</a>
+      <div class="user-chip"><div class="avatar" id="avatar">?</div><div><strong id="user-name">Not signed in</strong><small id="user-email">Connect your account</small></div></div>
+      <nav>
+        <button class="nav active" data-page="home">◉ <span>My planet</span></button>
+        <button class="nav" data-page="history">▤ <span>Seal history</span></button>
+        <button class="nav" data-page="friends">♧ <span>Friends</span></button>
+      </nav>
+      <div class="side-note">Small commitments can create a whole new world.</div>
+      <small class="side-foot">CONNECTED TO PLANETUBE · TOKYO</small>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div><div class="eyebrow">YOUR LITTLE UNIVERSE</div><h1 id="page-title">Your planet</h1></div>
+        <div class="top-actions"><span id="connection" class="connection">Not connected</span><button id="refresh" class="secondary" hidden>Refresh data</button><button id="logout" class="secondary" hidden>Log out</button></div>
+      </header>
+      <section id="auth-panel" class="auth-panel">
+        <div><span class="eyebrow">CONNECT YOUR EXTENSION</span><h2>Sign in to your Planetube account</h2><p>Use the same email and password that you use in the YoutubeSeal extension. Both will read and write to the same account data.</p></div>
+        <form id="auth-form">
+          <label for="email">Email address</label><input id="email" type="email" autocomplete="username" required>
+          <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="6">
+          <div class="auth-buttons"><button class="primary" type="submit">Log in</button><button class="secondary" id="signup" type="button">Create account</button></div>
+          <p id="auth-message" class="message" role="status"></p>
+        </form>
+      </section>
+      <div id="dashboard" hidden>
+        <section class="page active" id="page-home">
+          <div class="welcome"><div><h2 id="welcome-title">Welcome back.</h2><p>Here is the information saved to your Planetube account.</p></div><span class="live-pill">● Live database data</span></div>
+          <div class="hero-grid">
+            <article class="card planet-card">
+              <div class="card-heading"><div><span class="eyebrow">YOUR WORLD</span><h2 id="planet-name">Your planet</h2></div><span class="tag" id="planet-level">Level 1</span></div>
+              <div class="planet-scene"><div class="orbit"></div><div class="planet"><span>✦</span></div><p>A small world, growing at your pace.</p></div>
+              <div class="planet-data"><div><span>Growth points</span><strong id="growth-points">0</strong></div><div><span>Planet level</span><strong id="level-number">1</strong></div></div>
+              <p class="subtle" id="growth-note">These values are read directly from your Planetube database.</p>
+            </article>
+            <article class="card focus-card">
+              <span class="eyebrow">YOUR COMMITMENTS</span><h2>Your progress</h2>
+              <div class="metric"><span>Time protected</span><strong id="protected-time">0m</strong></div>
+              <div class="metric"><span>Completed seals</span><strong id="completed-count">0</strong></div>
+              <div class="metric"><span>Active seals</span><strong id="active-count">0</strong></div>
+              <div class="metric"><span>Total records</span><strong id="total-count">0</strong></div>
+              <p class="subtle">Only actual seal-session records are counted. No sample data is added.</p>
+            </article>
+          </div>
+          <article class="card recent-card"><div class="card-heading"><div><span class="eyebrow">RECENT ACTIVITY</span><h2>Latest seal sessions</h2></div><button class="text-link" data-go="history">See all →</button></div><div id="recent-list" class="session-list"></div></article>
+        </section>
+        <section class="page" id="page-history">
+          <div class="page-intro"><span class="eyebrow">YOUR JOURNEY</span><h2>Seal history</h2><p>These records are loaded from <code>ys_seal_sessions</code>.</p></div>
+          <div class="card"><div class="card-heading"><h2>All sessions</h2><span id="history-count" class="tag">0 records</span></div><div id="history-list" class="session-list"></div></div>
+        </section>
+        <section class="page" id="page-friends">
+          <div class="page-intro"><span class="eyebrow">YOUR CIRCLE</span><h2>Friends</h2><p>Friend connections are not in the database yet.</p></div>
+          <div class="card empty-friends"><div class="friend-symbol">♧</div><h2>Friends are coming later</h2><p>This page intentionally does not show fake people. We can add real friend profiles and privacy controls after the personal dashboard works.</p></div>
+        </section>
+      </div>
+      <footer>YoutubeSeal · Protect your time. Grow your world.</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
