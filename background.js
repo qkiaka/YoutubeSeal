@@ -77,6 +77,91 @@ async function syncSessionUpdate(patch) {
     method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify(patch)
   },token);
 }
+async function requireTestAdmin() {
+  const token = await currentToken();
+  if (!token) throw new Error("Cheat Modeを使うにはログインしてください。");
+  const {authSession} = await getState();
+  const userId = authSession?.user?.id;
+  if (!userId) throw new Error("ログイン情報を確認できません。再ログインしてください。");
+  const admins = await sbRequest(
+    "/rest/v1/ys_test_admins?select=user_id&user_id=eq." + encodeURIComponent(userId),
+    {},
+    token
+  );
+  if (!Array.isArray(admins) || !admins.some(row => row.user_id === userId)) {
+    throw new Error("このアカウントにはCheat Modeの権限がありません。");
+  }
+  return {token,userId};
+}
+
+async function getCheatStatus() {
+  const {token,userId} = await requireTestAdmin();
+  const [planets,activeTests] = await Promise.all([
+    sbRequest("/rest/v1/ys_planets?select=growth_points,level&user_id=eq." + encodeURIComponent(userId),{},token),
+    sbRequest("/rest/v1/ys_seal_sessions?select=id&user_id=eq." + encodeURIComponent(userId) + "&is_test=eq.true&status=eq.active&limit=1",{},token)
+  ]);
+  return {
+    authorized:true,
+    growthPoints:planets?.[0]?.growth_points ?? 0,
+    level:planets?.[0]?.level ?? 1,
+    activeTestSessionId:activeTests?.[0]?.id || null
+  };
+}
+
+async function createTestSession(minutes, completed) {
+  const {token,userId} = await requireTestAdmin();
+  const duration = Math.max(1,Math.min(10080,Math.floor(Number(minutes)||30)));
+  const endedAt = new Date();
+  const startedAt = new Date(endedAt.getTime() - (completed ? duration*60000 : 0));
+  const rows = await sbRequest("/rest/v1/ys_seal_sessions",{
+    method:"POST",
+    headers:{"Prefer":"return=representation"},
+    body:JSON.stringify({
+      user_id:userId,
+      started_at:startedAt.toISOString(),
+      ended_at:completed ? endedAt.toISOString() : null,
+      planned_duration_minutes:duration,
+      status:completed ? "completed" : "active",
+      is_test:true
+    })
+  },token);
+  return {ok:true,sessionId:rows?.[0]?.id||null};
+}
+
+async function finishTestSession(status) {
+  const {token,userId} = await requireTestAdmin();
+  if (!["completed","cancelled"].includes(status)) throw new Error("無効なテスト状態です。");
+  const active = await sbRequest(
+    "/rest/v1/ys_seal_sessions?select=id&user_id=eq." + encodeURIComponent(userId) + "&is_test=eq.true&status=eq.active&limit=1",
+    {},
+    token
+  );
+  if (!active?.[0]?.id) throw new Error("進行中のテストセッションがありません。");
+  const rows = await sbRequest(
+    "/rest/v1/ys_seal_sessions?id=eq." + encodeURIComponent(active[0].id) + "&user_id=eq." + encodeURIComponent(userId) + "&is_test=eq.true",
+    {method:"PATCH",headers:{"Prefer":"return=representation"},body:JSON.stringify({ended_at:new Date().toISOString(),status})},
+    token
+  );
+  if (!rows?.length) throw new Error("テストセッションを更新できませんでした。");
+  return {ok:true};
+}
+
+async function setTestPlanetValue(field, value) {
+  const {token,userId} = await requireTestAdmin();
+  const number = Math.floor(Number(value));
+  if (!Number.isFinite(number) || number < (field === "level" ? 1 : 0) || number > 100000000) {
+    throw new Error("数値を確認してください。");
+  }
+  const patch = {[field]:number,updated_at:new Date().toISOString()};
+  const rows = await sbRequest(
+    "/rest/v1/ys_planets?user_id=eq." + encodeURIComponent(userId),
+    {method:"PATCH",headers:{"Prefer":"return=representation"},body:JSON.stringify(patch)},
+    token
+  );
+  if (!rows?.length) throw new Error("惑星データを更新できませんでした。");
+  return {ok:true};
+}
+
 async function getAuthState() {
   const {authSession}=await getState();
   return {signedIn:!!authSession?.access_token,email:authSession?.user?.email||null};
@@ -111,6 +196,16 @@ chrome.runtime.onMessage.addListener((msg,sender,sendResponse)=>{
       switch(msg.type){
         case "GET_STATE": sendResponse(await getState()); break;
         case "GET_AUTH_STATE": sendResponse(await getAuthState()); break;
+        case "GET_CHEAT_STATUS": {
+          try { sendResponse(await getCheatStatus()); }
+          catch(error) { sendResponse({authorized:false,error:error.message}); }
+          break;
+        }
+        case "CHEAT_CREATE_COMPLETED": sendResponse(await createTestSession(msg.minutes,true)); break;
+        case "CHEAT_START_SESSION": sendResponse(await createTestSession(msg.minutes,false)); break;
+        case "CHEAT_FINISH_SESSION": sendResponse(await finishTestSession(msg.status||"completed")); break;
+        case "CHEAT_SET_GROWTH_POINTS": sendResponse(await setTestPlanetValue("growth_points",msg.value)); break;
+        case "CHEAT_SET_LEVEL": sendResponse(await setTestPlanetValue("level",msg.value)); break;
         case "AUTH_SIGNUP": {
           const data=await sbRequest("/auth/v1/signup",{method:"POST",body:JSON.stringify({email:msg.email,password:msg.password})});
           sendResponse(data?.access_token?await saveAuthSession(data):{ok:true,needsEmailConfirmation:true}); break;
