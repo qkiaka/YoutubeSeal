@@ -167,6 +167,20 @@ async function getAuthState() {
   return {signedIn:!!authSession?.access_token,email:authSession?.user?.email||null};
 }
 
+async function getPlanetState() {
+  const token = await currentToken();
+  if (!token) return {signedIn:false,level:1};
+  const {authSession} = await getState();
+  const userId = authSession?.user?.id;
+  if (!userId) return {signedIn:false,level:1};
+  const rows = await sbRequest(
+    "/rest/v1/ys_planets?select=level&user_id=eq." + encodeURIComponent(userId) + "&limit=1",
+    {},
+    token
+  );
+  return {signedIn:true,level:Math.max(1,Number(rows?.[0]?.level)||1)};
+}
+
 chrome.runtime.onInstalled.addListener(async()=>{
   const {setupDone}=await getState();
   if(!setupDone) chrome.tabs.create({url:chrome.runtime.getURL("options.html?first=1")});
@@ -196,6 +210,7 @@ chrome.runtime.onMessage.addListener((msg,sender,sendResponse)=>{
       switch(msg.type){
         case "GET_STATE": sendResponse(await getState()); break;
         case "GET_AUTH_STATE": sendResponse(await getAuthState()); break;
+        case "GET_PLANET_STATE": sendResponse(await getPlanetState()); break;
         case "GET_CHEAT_STATUS": {
           try { sendResponse(await getCheatStatus()); }
           catch(error) { sendResponse({authorized:false,error:error.message}); }
