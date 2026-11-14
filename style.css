@@ -92,3 +92,27 @@ input[type="text"], input[type="number"] {
   font-size: 0.85em;
   color: #999;
 }
+
+
+/* Shared fantasy atmosphere for the extension popup and settings page. */
+body{position:relative;isolation:isolate;overflow-x:hidden;background:#10182d;color:#eef3ff;transition:background 1s ease,color .5s ease}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 80% 8%,var(--theme-glow,#53627d),transparent 45%),radial-gradient(circle at 12% 90%,#ffffff18,transparent 42%);opacity:.5;transition:background 1s ease}
+body::after{content:"✦      ·          ✧       ·       ✦";position:fixed;top:8%;left:4%;right:4%;z-index:-1;color:#ffffff55;letter-spacing:2.5em;font-size:12px;pointer-events:none;animation:ys-stars 9s ease-in-out infinite alternate}
+body[data-stage="1"]{--theme-glow:#53627d}
+body[data-stage="2"]{--theme-glow:#4386ad}
+body[data-stage="3"]{--theme-glow:#399b85}
+body[data-stage="4"]{--theme-glow:#9875b9}
+body[data-stage="5"]{--theme-glow:#d29b65}
+body[data-stage="6"]{--theme-glow:#8e79c5}
+body[data-stage="7"]{--theme-glow:#5c9bc8}
+body[data-stage="8"]{--theme-glow:#4ac4b1}
+body[data-stage="9"]{--theme-glow:#b17acb}
+body[data-stage="10"]{--theme-glow:#e3bd72}
+.card{border:1px solid #ffffff1b;background:linear-gradient(145deg,#ffffff12,#ffffff08);backdrop-filter:blur(10px);transition:transform .25s ease,box-shadow .25s ease,border-color .5s ease}
+h1{color:#d6c6ff}
+button{transition:transform .2s ease,filter .2s ease,background .5s ease}
+button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}
+button:focus-visible,input:focus-visible{outline:3px solid #9bdff1;outline-offset:3px}
+.countdown{color:#9bdff1;text-shadow:0 0 18px #83d9ff55}
+@keyframes ys-stars{from{transform:translateY(0);opacity:.45}to{transform:translateY(8px);opacity:.9}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
